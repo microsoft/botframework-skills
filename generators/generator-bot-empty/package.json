@@ -23,17 +23,21 @@
     "url": "https://github.com/Microsoft/botframework-components.git"
   },
   "scripts": {
-    "lint": "eslint -c ../../.eslintrc.json ."
+    "lint": "eslint -c .eslintrc.json ."
   },
   "dependencies": {
     "@microsoft/generator-bot-adaptive": "workspace:^1.0.0",
-    "yeoman-generator": "^2.0.5",
-    "yeoman-test": "^1.9.1"
+    "yeoman-generator": "^5.3.0"
   },
   "devDependencies": {
     "eslint": "latest",
     "eslint-config-prettier": "latest",
     "eslint-plugin-prettier": "latest",
-    "prettier": "latest"
+    "prettier": "latest",
+    "yeoman-test": "^6.1.0"
+  },
+  "peerDependencies": {
+    "mem-fs": "^2.1.0",
+    "yeoman-environment": "^3.3.0"
   }
 }

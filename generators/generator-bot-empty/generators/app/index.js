@@ -9,7 +9,7 @@ module.exports = class extends BaseGenerator {
   initializing() {
     this.composeWith(
       require.resolve('@microsoft/generator-bot-adaptive/generators/app'),
-      Object.assign(this.options, {
+      Object.assign({}, this.options, {
         arguments: this.args,
         applicationSettingsDirectory: 'settings',
       })

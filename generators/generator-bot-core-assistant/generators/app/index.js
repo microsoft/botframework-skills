@@ -12,7 +12,7 @@ const packageReferences = {
   [platforms.dotnet]: [
     {
       name: 'Microsoft.Bot.Components.HelpAndCancel',
-      version: '1.0.0-preview.20210331.a54d9f1',
+      version: '1.0.0',
     },
   ],
   [platforms.js]: [
@@ -24,7 +24,7 @@ module.exports = class extends BaseGenerator {
   initializing() {
     this.composeWith(
       require.resolve('@microsoft/generator-bot-adaptive/generators/app'),
-      Object.assign(this.options, {
+      Object.assign({}, this.options, {
         arguments: this.args,
         applicationSettingsDirectory: 'settings',
         packageReferences: packageReferences[this.options.platform],
