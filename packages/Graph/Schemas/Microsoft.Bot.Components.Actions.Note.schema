@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schemas.botframework.com/schemas/component/v1.0/component.schema",
+  "$role": "implements(Microsoft.IDialog)",
+  "type": "object",
+  "title": "Note",
+  "description": "Note or comment action.",
+  "required": [
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Optional id for the dialog",
+      "examples": [
+        "AcceptEventDialog"
+      ]
+    },
+    "note": {
+      "$ref": "schema:#/definitions/stringExpression",
+      "title": "Add a note",
+      "description": "Add a note or comment. This action is for display purposes only.",
+      "examples": [
+        "Add a note"
+      ]
+    }
+  }
+}

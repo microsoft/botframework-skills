@@ -15,6 +15,13 @@
       },
       "actions": [
         {
+          "$kind": "Microsoft.Bot.Components.Actions.Note",
+          "$designer": {
+            "id": "KW4eEW"
+          },
+          "note": "this is a test"
+        },
+        {
           "$kind": "Microsoft.TraceActivity",
           "$designer": {
             "id": "vd6Jx9"

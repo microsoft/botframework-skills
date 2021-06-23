@@ -171,6 +171,29 @@
       "subtitle": "Skill Dialog"
     }
   },
+  "Microsoft.Bot.Components.Actions.Note": {
+    "flow": {
+      "body": {
+        "body": "=action.note",
+        "colors": {
+          "theme": "#FFF4CE"
+        },
+        "truncate": true,
+        "widget": "ActionCardBody"
+      },
+      "header": {
+        "colors": {
+          "theme": "#F6E7B3"
+        },
+        "widget": "ActionHeader"
+      },
+      "widget": "ActionCard"
+    },
+    "menu": {
+      "label": "Add a note",
+      "submenu": false
+    }
+  },
   "Microsoft.BreakLoop": {
     "form": {
       "label": "Break out of loop",
