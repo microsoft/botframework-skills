@@ -205,9 +205,6 @@ stages:
                 azureSubscription: "${{ parameters.azureSubscription }}"
                 appType: 'functionApp'
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
-                deployToSlotOrASE: true
-                resourceGroupName: '${{ parameters.resourceGroup }}'
-                slotName: 'production'
                 package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/${{ bot.name }}.zip'
                 deploymentMethod: runFromPackage
 
