@@ -187,7 +187,7 @@ stages:
                 appType: 'functionApp'
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
                 package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}/${{ bot.name }}.zip'
-                deploymentMethod: runFromPackage
+                deploymentMethod: auto
 
           # Configure OAuth
           - ${{ if eq(bot.type, 'Skill') }}:
