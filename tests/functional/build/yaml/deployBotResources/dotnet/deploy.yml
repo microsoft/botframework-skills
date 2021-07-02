@@ -151,7 +151,7 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'Publish zip package'
             inputs:
-              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip"
+              pathToPublish: "$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.project.name }}/${{ bot.name }}/${{ bot.name }}.zip"
               artifactName: dotnet-$(BUILD.BUILDID)
 
           - ${{ if eq(bot.project.integration, 'webapp') }}:
@@ -177,7 +177,7 @@ stages:
                 azureSubscription: "${{ parameters.azureSubscription }}"
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
                 resourceGroupName: '${{ parameters.resourceGroup }}'
-                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
+                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.project.name }}/${{ bot.name }}.zip'
                 deploymentMethod: runFromPackage
 
           - ${{ if eq(bot.project.integration, 'functions') }}:
@@ -203,7 +203,7 @@ stages:
                 azureSubscription: "${{ parameters.azureSubscription }}"
                 appType: 'functionApp'
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
-                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
+                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.project.name }}/${{ bot.name }}.zip'
                 deploymentMethod: auto
 
           # Configure OAuth
