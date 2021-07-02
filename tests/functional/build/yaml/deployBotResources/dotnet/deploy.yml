@@ -120,7 +120,7 @@ stages:
                 command: publish
                 publishWebProjects: false
                 projects: "$(SOLUTIONDIR)/${{ bot.project.name }}/${{ bot.project.name }}.csproj"
-                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/"
+                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/"
                 modifyOutputPath: false
 
             # Get BotBuilder package version
@@ -168,7 +168,7 @@ stages:
                 botName: "${{ bot.name }}"
                 botPricingTier: "${{ parameters.botPricingTier }}"
                 resourceSuffix: "${{ parameters.resourceSuffix }}"
-                templateFile: "build/templates/template-bot-resources.json"
+                templateFile: "build/templates/template-webapp-bot-resources.json"
 
           # Deploy bot to Azure Web App
             - task: AzureWebApp@1
@@ -194,7 +194,7 @@ stages:
                 botName: "${{ bot.name }}"
                 botPricingTier: "${{ parameters.botPricingTier }}"
                 resourceSuffix: "${{ parameters.resourceSuffix }}"
-                templateFile: "build/templates/template-bot-resources.json"
+                templateFile: "build/templates/template-functions-bot-resources.json"
 
           # Deploy bot to Azure Functions
             - task: AzureFunctionApp@1
