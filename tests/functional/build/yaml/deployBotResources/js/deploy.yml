@@ -23,6 +23,11 @@ parameters:
     displayName: Bot Pricing Tier
     type: string
 
+  - name: buildFolder
+    displayName: Build Folder
+    type: string
+    default: "build-js"
+
   - name: connectionName
     displayName: OAuth Connection Name
     type: string
@@ -161,7 +166,7 @@ stages:
               rootFolderOrFile: '$(SOLUTIONDIR)/${{ bot.project.name }}'
               includeRootFolder: false
               archiveType: 'zip'
-              archiveFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/${{ bot.name }}.zip'
+              archiveFile: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
               replaceExistingArchive: true
               verbose: true
 
@@ -169,7 +174,7 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'Publish zip package'
             inputs:
-              pathToPublish: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/${{ bot.name }}.zip'
+              pathToPublish: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
               artifactName: javascript-$(BUILD.BUILDID)
 
           - ${{ if eq(bot.project.integration, 'webapp') }}:
@@ -195,7 +200,7 @@ stages:
                 azureSubscription: "${{ parameters.azureSubscription }}"
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
                 resourceGroupName: '${{ parameters.resourceGroup }}'
-                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/${{ bot.name }}.zip'
+                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
                 deploymentMethod: runFromPackage
 
           - ${{ if eq(bot.project.integration, 'functions') }}:
@@ -221,7 +226,7 @@ stages:
                 azureSubscription: "${{ parameters.azureSubscription }}"
                 appType: 'functionApp'
                 appName: '${{ bot.name }}${{ parameters.resourceSuffix }}-$(BUILD.BUILDID)'
-                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/build/${{ bot.name }}.zip'
+                package: '$(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}.zip'
                 deploymentMethod: auto
 
           # Configure OAuth
