@@ -1,0 +1,222 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appId": {
+      "type": "string",
+      "metadata": {
+        "description": "Active Directory App ID, set as MicrosoftAppId in the Web App's Application Settings."
+      }
+    },
+    "appSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "Active Directory App Password, set as MicrosoftAppPassword in the Web App's Application Settings."
+      }
+    },
+    "botName": {
+      "type": "string"
+    },
+    "botLocation": {
+      "type": "string"
+    },
+    "appInsightsName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "appServicePlanName": {
+      "type": "string"
+    },
+    "appServicePlanResourceGroup": {
+      "type": "string"
+    },
+    "botSku": {
+      "type": "string",
+      "defaultValue": "F0",
+      "metadata": {
+        "description": "The pricing tier of the Bot Service Registration. Acceptable values are F0 and S1."
+      }
+    }
+  },
+  "variables": {
+    "siteHost": "[concat(parameters('botName'), '.azurewebsites.net')]",
+    "botEndpoint": "[concat('https://', variables('siteHost'), '/api/messages')]",
+    "publishingUsername": "[concat('$', parameters('botName'))]"
+  },
+  "resources": [
+      {
+        "type": "Microsoft.Web/serverfarms",
+        "apiVersion": "2018-02-01",
+        "name": "[parameters('appServicePlanName')]",
+        "location": "West US",
+        "sku": {
+            "name": "Y1",
+            "tier": "Dynamic",
+            "size": "Y1",
+            "family": "Y",
+            "capacity": 0
+        },
+        "kind": "functionapp",
+        "properties": {
+            "perSiteScaling": false,
+            "maximumElasticWorkerCount": 1,
+            "isSpot": false,
+            "reserved": false,
+            "isXenon": false,
+            "hyperV": false,
+            "targetWorkerCount": 0,
+            "targetWorkerSizeId": 0
+        }
+    },
+    {
+        "type": "Microsoft.Web/sites",
+        "apiVersion": "2018-11-01",
+        "name": "[parameters('botName')]",
+        "location": "West US",
+        "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+        ],
+        "kind": "functionapp",
+        "properties": {
+            "enabled": true,
+            "hostNameSslStates": [
+                {
+                    "name": "[concat(parameters('botName'), '.azurewebsites.net')]",
+                    "sslState": "Disabled",
+                    "hostType": "Standard"
+                },
+                {
+                    "name": "[concat(parameters('botName'), '.scm.azurewebsites.net')]",
+                    "sslState": "Disabled",
+                    "hostType": "Repository"
+                }
+            ],
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+            "reserved": false,
+            "isXenon": false,
+            "hyperV": false,
+            "siteConfig": {
+                "numberOfWorkers": 1,
+                "alwaysOn": false,
+                "http20Enabled": false
+            },
+            "scmSiteAlsoStopped": false,
+            "clientAffinityEnabled": false,
+            "clientCertEnabled": false,
+            "hostNamesDisabled": false,
+            "containerSize": 1536,
+            "dailyMemoryTimeQuota": 0,
+            "httpsOnly": true,
+            "redundancyMode": "None"
+        }
+    },
+    {
+        "type": "Microsoft.Web/sites/config",
+        "apiVersion": "2018-11-01",
+        "name": "[concat(parameters('botName'), '/web')]",
+        "location": "West US",
+        "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
+        ],
+        "properties": {
+            "numberOfWorkers": 1,
+            "defaultDocuments": [
+                "Default.htm",
+                "Default.html",
+                "Default.asp",
+                "index.htm",
+                "index.html",
+                "iisstart.htm",
+                "default.aspx",
+                "index.php"
+            ],
+            "netFrameworkVersion": "v4.0",
+            "phpVersion": "5.6",
+            "requestTracingEnabled": false,
+            "remoteDebuggingEnabled": false,
+            "httpLoggingEnabled": false,
+            "logsDirectorySizeLimit": 35,
+            "detailedErrorLoggingEnabled": false,
+            "publishingUsername": "$rjsfunctest",
+            "azureStorageAccounts": {},
+            "scmType": "None",
+            "use32BitWorkerProcess": true,
+            "webSocketsEnabled": true,
+            "alwaysOn": false,
+            "managedPipelineMode": "Integrated",
+            "virtualApplications": [
+                {
+                    "virtualPath": "/",
+                    "physicalPath": "site\\wwwroot",
+                    "preloadEnabled": false
+                }
+            ],
+            "loadBalancing": "LeastRequests",
+            "experiments": {
+                "rampUpRules": []
+            },
+            "autoHealEnabled": false,
+            "localMySqlEnabled": false,
+            "ipSecurityRestrictions": [
+                {
+                    "ipAddress": "Any",
+                    "action": "Allow",
+                    "priority": 1,
+                    "name": "Allow all",
+                    "description": "Allow all access"
+                }
+            ],
+            "scmIpSecurityRestrictions": [
+                {
+                    "ipAddress": "Any",
+                    "action": "Allow",
+                    "priority": 1,
+                    "name": "Allow all",
+                    "description": "Allow all access"
+                }
+            ],
+            "scmIpSecurityRestrictionsUseMain": false,
+            "http20Enabled": false,
+            "minTlsVersion": "1.2",
+            "ftpsState": "AllAllowed",
+            "reservedInstanceCount": 0
+        }
+    },
+    {
+        "type": "Microsoft.Web/sites/hostNameBindings",
+        "apiVersion": "2018-11-01",
+        "name": "[concat(parameters('botName'), '/', parameters('botName'), '.azurewebsites.net')]",
+        "location": "West US",
+        "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
+        ],
+        "properties": {
+            "siteName": "rjsfunctest",
+            "hostNameType": "Verified"
+        }
+    },
+    {
+      "type": "Microsoft.BotService/botServices",
+      "apiVersion": "2020-06-02",
+      "name": "[parameters('botName')]",
+      "location": "global",
+      "kind": "bot",
+      "sku": {
+        "name": "[parameters('botSku')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
+      ],
+      "properties": {
+        "name": "[parameters('botName')]",
+        "displayName": "[parameters('botName')]",
+        "endpoint": "[variables('botEndpoint')]",
+        "msaAppId": "[parameters('appId')]",
+        "developerAppInsightsApplicationId": "",
+        "developerAppInsightKey": "",
+        "publishingCredentials": null,
+        "storageResourceId": null
+      }
+    }
+  ]
+}
