@@ -120,7 +120,7 @@ stages:
                 command: publish
                 publishWebProjects: false
                 projects: "$(SOLUTIONDIR)/${{ bot.project.name }}/${{ bot.project.name }}.csproj"
-                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/"
+                arguments: "--output $(SYSTEM.DEFAULTWORKINGDIRECTORY)/${{ parameters.buildFolder }}/${{ bot.name }}"
                 modifyOutputPath: false
 
             # Get BotBuilder package version
