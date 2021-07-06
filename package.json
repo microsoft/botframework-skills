@@ -6,7 +6,8 @@
     "packages/*",
     "packages/*/js",
     "skills/declarative/*",
-    "testing/*"
+    "tests/*",
+    "!tests/functional"
   ],
   "scripts": {
     "lint": "yarn workspaces foreach run lint"

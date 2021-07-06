@@ -1,0 +1,14 @@
+{
+  "name": "unit-tests",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@microsoft/bot-components-teams": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "^9.0.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
