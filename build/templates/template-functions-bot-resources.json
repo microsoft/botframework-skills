@@ -70,7 +70,7 @@
             "hyperV": false,
             "siteConfig": {
                 "numberOfWorkers": 1,
-                "alwaysOn": false,
+                "alwaysOn": true,
                 "http20Enabled": false
             },
             "scmSiteAlsoStopped": false,
@@ -80,18 +80,7 @@
             "containerSize": 1536,
             "dailyMemoryTimeQuota": 0,
             "httpsOnly": true,
-            "redundancyMode": "None"
-        }
-    },
-    {
-        "type": "Microsoft.Web/sites/config",
-        "apiVersion": "2018-11-01",
-        "name": "[concat(parameters('botName'), '/web')]",
-        "location": "West US",
-        "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
-        ],
-        "properties": {
+            "redundancyMode": "None",
             "numberOfWorkers": 1,
             "defaultDocuments": [
                 "Default.htm",
@@ -110,12 +99,12 @@
             "httpLoggingEnabled": false,
             "logsDirectorySizeLimit": 35,
             "detailedErrorLoggingEnabled": false,
-            "publishingUsername": "$rjsfunctest",
+            "publishingUsername": "[variables('publishingUsername')]",
             "azureStorageAccounts": {},
             "scmType": "None",
             "use32BitWorkerProcess": true,
             "webSocketsEnabled": true,
-            "alwaysOn": false,
+            "alwaysOn": true,
             "managedPipelineMode": "Integrated",
             "virtualApplications": [
                 {
@@ -164,7 +153,7 @@
             "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
         ],
         "properties": {
-            "siteName": "rjsfunctest",
+            "siteName": "[parameters('botName')]",
             "hostNameType": "Verified"
         }
     },
