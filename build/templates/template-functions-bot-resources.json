@@ -70,7 +70,7 @@
             "hyperV": false,
             "siteConfig": {
                 "numberOfWorkers": 1,
-                "alwaysOn": true,
+                "alwaysOn": false,
                 "http20Enabled": false
             },
             "scmSiteAlsoStopped": false,
@@ -110,12 +110,12 @@
             "httpLoggingEnabled": false,
             "logsDirectorySizeLimit": 35,
             "detailedErrorLoggingEnabled": false,
-            "publishingUsername": "[variables('publishingUsername')]",
+            "publishingUsername": "$rjsfunctest",
             "azureStorageAccounts": {},
             "scmType": "None",
             "use32BitWorkerProcess": true,
             "webSocketsEnabled": true,
-            "alwaysOn": true,
+            "alwaysOn": false,
             "managedPipelineMode": "Integrated",
             "virtualApplications": [
                 {
@@ -164,7 +164,7 @@
             "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
         ],
         "properties": {
-            "siteName": "[parameters('botName')]",
+            "siteName": "rjsfunctest",
             "hostNameType": "Verified"
         }
     },
