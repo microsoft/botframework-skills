@@ -69,8 +69,34 @@
             "isXenon": false,
             "hyperV": false,
             "siteConfig": {
+                "appSettings": [
+                  {
+                    "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                    "value": "10.14.1"
+                  },
+                  {
+                    "name": "MicrosoftAppId",
+                    "value": "[parameters('appId')]"
+                  },
+                  {
+                    "name": "MicrosoftAppPassword",
+                    "value": "[parameters('appSecret')]"
+                  },
+                  {
+                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                    "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('appServicePlanResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.InstrumentationKey)]"
+                  },
+                  {
+                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                    "value": "[if(empty(parameters('appInsightsName')), '', reference(resourceId(parameters('appServicePlanResourceGroup'),'Microsoft.Insights/components', parameters('appInsightsName')), '2015-05-01', 'Full').properties.ConnectionString)]"
+                  },
+                  {
+                    "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                    "value": "~2"
+                  }
+                ],
                 "numberOfWorkers": 1,
-                "alwaysOn": false,
+                "alwaysOn": true,
                 "http20Enabled": false
             },
             "scmSiteAlsoStopped": false,
@@ -110,12 +136,12 @@
             "httpLoggingEnabled": false,
             "logsDirectorySizeLimit": 35,
             "detailedErrorLoggingEnabled": false,
-            "publishingUsername": "$rjsfunctest",
+            "publishingUsername": "[variables('publishingUsername')]",
             "azureStorageAccounts": {},
             "scmType": "None",
             "use32BitWorkerProcess": true,
             "webSocketsEnabled": true,
-            "alwaysOn": false,
+            "alwaysOn": true,
             "managedPipelineMode": "Integrated",
             "virtualApplications": [
                 {
@@ -164,7 +190,7 @@
             "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
         ],
         "properties": {
-            "siteName": "rjsfunctest",
+            "siteName": "[parameters('botName')]",
             "hostNameType": "Verified"
         }
     },
