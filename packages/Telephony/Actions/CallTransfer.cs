@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AdaptiveExpressions.Properties;
-using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Adaptive.Actions;
+using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 
 namespace Microsoft.Bot.Components.Telephony.Actions
@@ -55,12 +56,23 @@ namespace Microsoft.Bot.Components.Telephony.Actions
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async override Task<DialogTurnResult> BeginDialogAsync(DialogContext dc, object options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var phoneNumber = this.PhoneNumber?.GetValue(dc.State);
+            if (dc.Context.Activity.ChannelId == Channels.Telephony)
+            {
+                var error = "Phone number is empty, please provide number in E.164 format";
 
-            // Create handoff event, passing the phone number to transfer to as context.
-            HandoffContext = new { TargetPhoneNumber = phoneNumber };
-            
-            return await base.BeginDialogAsync(dc, options, cancellationToken).ConfigureAwait(false);
+                var phoneNumber = this.PhoneNumber?.GetValue(dc.State);
+
+                if (string.IsNullOrEmpty(phoneNumber))
+                {
+                    return await dc.EndDialogAsync(result: error, cancellationToken: cancellationToken).ConfigureAwait(false);
+                }
+
+                // Create handoff event, passing the phone number to transfer to as context.
+                HandoffContext = new { TargetPhoneNumber = phoneNumber };
+                return await base.BeginDialogAsync(dc, options, cancellationToken).ConfigureAwait(false);
+            }
+
+            return await dc.EndDialogAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
         }
     }
 }
